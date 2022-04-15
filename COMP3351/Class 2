@@ -1,0 +1,199 @@
+Last login: Wed Mar 28 16:05:16 on ttys071
+Cesars-MacBook-Pro:~ Cesar$ ghci
+GHCi, version 8.2.2: http://www.haskell.org/ghc/  :? for help
+Prelude> :quit
+Leaving GHCi.
+Cesars-MacBook-Pro:~ Cesar$ ghci
+GHCi, version 8.2.2: http://www.haskell.org/ghc/  :? for help
+Prelude> :l first.hs
+
+<no location info>: error: can't find file: first.hs
+Failed, no modules loaded.
+Prelude> :set +m
+Prelude> pow (x, y) = 
+
+<interactive>:3:14: error:
+    parse error (possibly incorrect indentation or mismatched brackets)
+Prelude> pow (x, y) = if y == 0
+Prelude|    then 1
+Prelude|    else x * pow(x, y - 1)
+Prelude> pow (3, 5)
+243
+Prelude> pow (3, 156)
+269721605590607563262106870407286853611938890184108047911269431464974473521
+Prelude> pow' x y = if y == 0
+Prelude|   then 1
+Prelude|   else x * pow' x (y - 1)
+Prelude> :t pow'
+pow' :: (Eq t, Num t, Num p) => p -> t -> p
+Prelude> :T pow
+unknown command ':T'
+use :? for help.
+Prelude> :t pow
+pow :: (Eq b, Num b, Num p) => (p, b) -> p
+Prelude> pow' (3, 156)
+
+<interactive>:15:1: error:
+    • Non type-variable argument in the constraint: Num (a, b)
+      (Use FlexibleContexts to permit this)
+    • When checking the inferred type
+        it :: forall t a b.
+              (Num (a, b), Num b, Num a, Num t, Eq t) =>
+              t -> (a, b)
+Prelude> pow' 3 156
+269721605590607563262106870407286853611938890184108047911269431464974473521
+Prelude> pow' 3 3
+27
+Prelude> cube x = pow' x 3
+Prelude> ans = cube 4
+Prelude> ans
+64
+Prelude> pow2 = pow 2 
+
+<interactive>:21:1: error:
+    • Non type-variable argument in the constraint: Num (p, b)
+      (Use FlexibleContexts to permit this)
+    • When checking the inferred type
+        pow2 :: forall b p. (Num (p, b), Num b, Num p, Eq b) => p
+Prelude> pow2 = pow' 2
+Prelude> :t pow'
+pow' :: (Eq t, Num t, Num p) => p -> t -> p
+Prelude> pow2 5
+32
+Prelude> a = pow2 5
+Prelude> a
+32
+Prelude> (4, 5)
+(4,5)
+Prelude> (4, a)
+(4,32)
+Prelude> :t pow
+pow :: (Eq b, Num b, Num p) => (p, b) -> p
+Prelude> fst (4, a)
+4
+Prelude> snd (4, a)
+32
+Prelude> snd (4, (a, 'a'))
+(32,'a')
+Prelude> swap (a, b) = (snd (a, b), fst (b, a))
+Prelude> swap (4, a
+Prelude| swap' (a, b) = (b, a)
+Prelude| swap(4,a)
+Prelude| 
+
+<interactive>:35:1: error:
+    parse error (possibly incorrect indentation or mismatched brackets)
+Prelude> swap' (a, b) = (b, a)
+Prelude> swap'(4, a)
+(32,4)
+Prelude> swap pr = (snd pr, fst pr)
+Prelude> swap (4, 3)
+(3,4)
+Prelude> fst (1, 2, 3)
+
+<interactive>:42:5: error:
+    • Couldn't match expected type ‘(a, b0)’
+                  with actual type ‘(Integer, Integer, Integer)’
+    • In the first argument of ‘fst’, namely ‘(1, 2, 3)’
+      In the expression: fst (1, 2, 3)
+      In an equation for ‘it’: it = fst (1, 2, 3)
+    • Relevant bindings include it :: a (bound at <interactive>:42:1)
+Prelude> sumTwoPairs p1 p2 = ((fst p1) + (fst p2), (snd p1) + (snd p2))
+Prelude> sumTwoPairs (1, 2) (3, 4)
+(4,6)
+Prelude> sTP (a, b) (a', b') = (a + a', b + b')
+Prelude> sTP (1, 2) (3, 4)
+(4,6)
+Prelude> divMod (x, y) = ((div x y), (mod x y))
+Prelude> divMod(1235, 987123)
+(0,1235)
+Prelude> sortPair (x, y) = if x < y
+Prelude|   then (x, y)
+Prelude|   else (y, x)
+Prelude> sortPair (1234, 51)
+(51,1234)
+Prelude> [1, 2, 3]
+[1,2,3]
+Prelude> [1, 'a']
+
+<interactive>:54:2: error:
+    • No instance for (Num Char) arising from the literal ‘1’
+    • In the expression: 1
+      In the expression: [1, 'a']
+      In an equation for ‘it’: it = [1, 'a']
+Prelude> []
+[]
+Prelude> :t []
+[] :: [a]
+Prelude> :t [1, 2, 3]
+[1, 2, 3] :: Num a => [a]
+Prelude> a = []
+Prelude> :T a
+unknown command ':T'
+use :? for help.
+Prelude> :t a
+a :: [a]
+Prelude> a = [1, 2, 3]
+Prelude> :t a
+a :: Num a => [a]
+Prelude> 
+Prelude> 1:[2, 3]
+[1,2,3]
+Prelude> [1. 2]++[3, 4]
+
+<interactive>:65:1: error:
+    • Non type-variable argument in the constraint: Num (a -> c)
+      (Use FlexibleContexts to permit this)
+    • When checking the inferred type
+        it :: forall b c a.
+              (Num (a -> c), Num (a -> b), Num (b -> c)) =>
+              [a -> c]
+Prelude> [1, 2]++[3, 4]
+[1,2,3,4]
+Prelude> a = [1, 2]
+Prelude> b = [3, 4]
+Prelude> c = a++B
+
+<interactive>:69:8: error: Data constructor not in scope: B :: [a]
+Prelude> c = a++b
+Prelude> a
+[1,2]
+Prelude> b
+[3,4]
+Prelude> c
+[1,2,3,4]
+Prelude> head [1, 2, 3, 4]
+1
+Prelude> tail [1, 2, 3, 4]
+[2,3,4]
+Prelude> null []
+True
+Prelude> sumList lst = if null lst
+Prelude|   then 0
+Prelude|   else (head lst) + (sumList (tail lst))
+Prelude> :T sumList
+unknown command ':T'
+use :? for help.
+Prelude> :t sumList
+sumList :: Num p => [p] -> p
+Prelude> sumList [1, 2, 3, 4, 5]
+15
+Prelude> countdown x = if null lst
+Prelude| 
+
+<interactive>:83:26: error:
+    parse error (possibly incorrect indentation or mismatched brackets)
+Prelude> countdown x = if x == 0
+Prelude|   then []
+Prelude|   else x : countdown (x - 1)
+Prelude> countdown 25
+[25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]
+Prelude> [1..20]
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+Prelude> [2..20]
+[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+Prelude> [25,24..1]
+[25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]
+Prelude> [2,4..20]
+[2,4,6,8,10,12,14,16,18,20]
+Prelude> 

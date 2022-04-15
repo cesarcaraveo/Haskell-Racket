@@ -1,0 +1,6 @@
+-- sDotProduct
+-- takes single number and 2 pairs
+-- multiply 1st coordinates together and add them two product of 2nd coordinates and multiply result by number
+-- ex. 5 (3,4) (4,5) = ((3*4) + (4*5)) * 5 = 160
+
+sDotProduct num (f1, f2) (s1, s2) = ((f1 * s1) + (f2 * s2)) * 5

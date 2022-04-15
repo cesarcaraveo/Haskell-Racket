@@ -1,0 +1,1 @@
+likes(wallace, cheese).
